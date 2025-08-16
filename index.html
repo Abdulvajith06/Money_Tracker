@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Friendsy Money Tracker</title>
+  <meta name="theme-color" content="#622D78" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <meta name="description" content="A Friends-inspired, voice-based PWA money tracker with offline support and Excel export." />
+  <style>
+    /* Minimal critical CSS to avoid FOUC while styles.css loads */
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; margin: 0; background: #2e2140; color: #fff; }
+    .app { opacity: 0; transition: opacity .2s ease; }
+    .app.ready { opacity: 1; }
+  </style>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="background">
+    <div class="couch"></div>
+    <div class="lamp lamp-left"></div>
+    <div class="lamp lamp-right"></div>
+    <div class="steam s1"></div>
+    <div class="steam s2"></div>
+    <div class="steam s3"></div>
+    <div class="frame"></div>
+    <div class="string-lights">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <main class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="./icons/icon-192.png" alt="" />
+        <h1>Friendsy Money Tracker</h1>
+      </div>
+      <div class="actions">
+        <button id="installBtn" class="btn">Install</button>
+        <button id="exportBtn" class="btn">Export to Excel (.csv)</button>
+        <button id="voiceBtn" class="btn primary">🎙️ Voice</button>
+        <button id="speakSummaryBtn" class="btn">🔊 Playback</button>
+        <a class="btn subtle" href="#" id="helpLink">Help</a>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2>Add Transaction</h2>
+      <form id="txnForm">
+        <input type="date" id="date" required />
+        <input type="text" id="desc" placeholder="What was it for?" required />
+        <input type="text" id="category" placeholder="Category (Coffee, Rent, ...)" />
+        <input type="number" step="0.01" id="amount" placeholder="Amount" required />
+        <select id="type">
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+        <button class="btn primary" type="submit">Add</button>
+      </form>
+      <p class="hint">Tip: Try the mic — say things like: <em>“add expense 200 for coffee”</em> or <em>“income 5000 salary”</em>.</p>
+    </section>
+
+    <section class="panel">
+      <div class="summary">
+        <div><strong>Total Income:</strong> <span id="totalIncome">0</span></div>
+        <div><strong>Total Expense:</strong> <span id="totalExpense">0</span></div>
+        <div><strong>Balance:</strong> <span id="balance">0</span></div>
+      </div>
+
+      <div class="tableWrap">
+        <table id="txnTable">
+          <thead>
+            <tr>
+              <th>Date</th><th>Description</th><th>Category</th><th>Type</th><th>Amount</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <small>Works offline • Voice input & playback • Export to Excel (.csv)</small>
+    </footer>
+  </main>
+
+  <dialog id="helpDialog">
+    <h3>Voice Quickstart</h3>
+    <ul>
+      <li><code>add expense 200 for coffee</code></li>
+      <li><code>add income 5000 salary</code></li>
+      <li><code>delete last</code> (removes most recent)</li>
+      <li><code>summary</code> (speaks totals)</li>
+    </ul>
+    <form method="dialog"><button class="btn">Close</button></form>
+  </dialog>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
